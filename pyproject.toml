@@ -1,0 +1,27 @@
+[project]
+name = "aibotchat"
+version = "0.1.0"
+description = "AI customer service backend MVP"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.5",
+    "fastapi>=0.135.2",
+    "langchain>=1.2.13",
+    "pydantic-settings>=2.11.0",
+    "psycopg[binary]>=3.2.12",
+    "redis>=6.4.0",
+    "sqlalchemy>=2.0.44",
+    "uvicorn>=0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+python_files = ["test_*.py"]
+addopts = "-p no:cacheprovider"
