@@ -36,6 +36,21 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
 
+    # LLM
+    llm_provider: str = "openai"
+    llm_api_key: str = ""
+    llm_base_url: str = "https://api.openai.com/v1"
+    llm_default_model: str = "gpt-4o-mini"
+    llm_timeout: float = 60.0
+    llm_max_context_rounds: int = 20
+
+    # Guards / Rate Limiting
+    guard_max_requests_per_minute: int = 20
+    guard_max_message_length: int = 4000
+    guard_session_lock_enabled: bool = True
+    guard_idempotency_enabled: bool = True
+    guard_idempotency_ttl: int = 300
+
     @property
     def resolved_database_url(self) -> str:
         if self.database_url:

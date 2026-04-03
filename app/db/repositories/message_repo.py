@@ -37,6 +37,23 @@ class MessageRepository:
         self.db.flush()
         return message
 
+    def list_messages(
+        self,
+        session_id: int,
+        *,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> tuple[list[Message], int]:
+        """返回会话消息列表和总数"""
+        query = (
+            self.db.query(Message)
+            .filter(Message.session_id == session_id)
+            .order_by(Message.created_at.asc())
+        )
+        total = query.count()
+        items = query.offset(offset).limit(limit).all()
+        return items, total
+
     def touch_session(self, chat_session: ChatSession, last_message_at: datetime) -> None:
         chat_session.last_message_at = last_message_at
         self.db.add(chat_session)

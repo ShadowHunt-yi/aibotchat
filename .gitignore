@@ -11,3 +11,9 @@ wheels/
 
 # Local environment overrides
 .env
+
+# Claude Code
+.claude/
+
+# Misc
+NUL

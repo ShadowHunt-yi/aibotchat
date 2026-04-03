@@ -70,3 +70,15 @@ class SessionRepository:
 
     def get_session_by_code(self, session_code: str) -> ChatSession | None:
         return self.db.query(ChatSession).filter(ChatSession.session_code == session_code).one_or_none()
+
+    def get_session_with_tenant(self, session_code: str, tenant_code: str) -> ChatSession | None:
+        """通过 session_code 和 tenant_code 联合查询"""
+        return (
+            self.db.query(ChatSession)
+            .join(Tenant, ChatSession.tenant_id == Tenant.id)
+            .filter(
+                ChatSession.session_code == session_code,
+                Tenant.tenant_code == tenant_code,
+            )
+            .one_or_none()
+        )

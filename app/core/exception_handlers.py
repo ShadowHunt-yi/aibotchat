@@ -26,6 +26,61 @@ class NotFoundError(AppError):
         super().__init__(message, code=40404, status_code=status.HTTP_404_NOT_FOUND)
 
 
+class LLMError(AppError):
+    """大模型调用异常"""
+
+    def __init__(self, message: str = "llm service error") -> None:
+        super().__init__(message, code=50200, status_code=status.HTTP_502_BAD_GATEWAY)
+
+
+class LLMTimeoutError(AppError):
+    """大模型超时"""
+
+    def __init__(self) -> None:
+        super().__init__("llm request timeout", code=50400, status_code=status.HTTP_504_GATEWAY_TIMEOUT)
+
+
+class RateLimitExceeded(AppError):
+    def __init__(self) -> None:
+        super().__init__(
+            "rate limit exceeded, please try again later",
+            code=42900,
+            status_code=429,
+        )
+
+
+class ConcurrentRequestBlocked(AppError):
+    def __init__(self) -> None:
+        super().__init__(
+            "another request is being processed in this session",
+            code=42901,
+            status_code=429,
+        )
+
+
+class DuplicateRequestError(AppError):
+    def __init__(self) -> None:
+        super().__init__("duplicate request", code=40901, status_code=409)
+
+
+class SessionNotActiveError(AppError):
+    def __init__(self, session_status: str) -> None:
+        super().__init__(
+            f"session is {session_status}, cannot send messages",
+            code=40301,
+            status_code=403,
+        )
+
+
+class ContentTooLongError(AppError):
+    def __init__(self, max_length: int) -> None:
+        super().__init__(
+            f"message content exceeds maximum length of {max_length} characters",
+            code=42201,
+            status_code=422,
+        )
+
+
 def _error_payload(message: str, *, code: int) -> dict:
     return {
         "code": code,
